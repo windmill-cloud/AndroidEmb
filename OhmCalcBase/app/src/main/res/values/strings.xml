@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">OhmCalcBase</string>
+    <string name="dialog_message">Place the box over the color bands of the resistor</string>
+    <string name="dialog_title">How to scan resistors</string>
+    <string name="dialog_ok">OK</string>
+    <string name="action_settings">Settings</string>
+</resources>
