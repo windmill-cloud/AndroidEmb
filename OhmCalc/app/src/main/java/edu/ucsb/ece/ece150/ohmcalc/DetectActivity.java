@@ -2,11 +2,14 @@ package edu.ucsb.ece.ece150.ohmcalc;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.hardware.Camera;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.WindowManager;
+import android.widget.SeekBar;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
@@ -28,7 +31,9 @@ import java.io.InputStream;
 
 public class DetectActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener2 {
 
-    private CameraBridgeViewBase mOpenCvCameraView;
+    //private CameraBridgeViewBase mOpenCvCameraView;
+
+    protected ZoomCameraView mOpenCvCameraView;
     public String TAG = "OpenCV";
     public File mCascadeFile;
     public CascadeClassifier haarCascade=null;
@@ -37,6 +42,7 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
     private String filename = "cascade.xml";
     private int counter = 0;
     private MatOfRect faces;
+    //protected SeekBar zoomControl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +51,12 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
         Log.i(TAG, "called onCreate");
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.OpenCVCameraPreview);
+        mOpenCvCameraView = (ZoomCameraView) findViewById(R.id.OpenCVCameraPreview);
         mOpenCvCameraView.setFocusable(true);
         mOpenCvCameraView.setMaxFrameSize(640, 360);
         //mOpenCvCameraView.setRotation(50f);
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
+        mOpenCvCameraView.setZoomControl((SeekBar) findViewById(R.id.CameraZoomControls));
         mOpenCvCameraView.setCvCameraViewListener(this);
 
     }
@@ -183,7 +190,7 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
             //}
         }
         Rect[] facesArray = faces.toArray();
-        Log.i("NumOfFaces",Integer.toString(facesArray.length));
+        Log.i("NumOfFaces", Integer.toString(facesArray.length));
         for (int i = 0; i < facesArray.length; i++)
             Core.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), new Scalar(100), 3);
         return mRgba;
@@ -192,4 +199,8 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
 
         //return inputFrame.rgba();
     }
+
+
+
+
 }

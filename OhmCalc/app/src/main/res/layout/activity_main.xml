@@ -16,7 +16,7 @@
         android:id="@+id/buttonEnter"
         android:text="Manual Enter Color Code"
         android:layout_gravity="center"
-        android:layout_weight="0" />
+        android:layout_weight="1" />
 
     <Button
         android:layout_width="220dp"
@@ -24,7 +24,7 @@
         android:text="Detect"
         android:id="@+id/buttonDetect"
         android:layout_gravity="center"
-        android:layout_weight="0" />
+        android:layout_weight="1" />
 
     <Button
         android:layout_width="220dp"
@@ -32,6 +32,6 @@
         android:text="Enter Resistance"
         android:id="@+id/buttonDisplay"
         android:layout_gravity="center"
-        android:layout_weight="0"/>
+        android:layout_weight="1"/>
 
 </LinearLayout>
