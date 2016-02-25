@@ -20,6 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/OpenCVCameraPreview"
         android:layout_centerInParent="true"
-        android:id="@+id/CameraZoomControls"/>
+        android:id="@+id/CameraZoomControls"
+        android:thumbTint="#0026ff"
+        android:thumbTintMode="src_over" />
 
 </RelativeLayout>

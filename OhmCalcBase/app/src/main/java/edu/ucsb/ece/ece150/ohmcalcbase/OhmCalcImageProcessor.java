@@ -32,7 +32,7 @@ public class OhmCalcImageProcessor {
             { new Scalar(4, 100, 100), new Scalar(9, 250, 150) },   // orange
             { new Scalar(20, 130, 100), new Scalar(30, 250, 160) }, // yellow
             { new Scalar(45, 50, 60), new Scalar(72, 250, 150) },   // green
-            { new Scalar(80, 50, 50), new Scalar(106, 250, 150) },  // blue
+            { new Scalar(110, 20, 50), new Scalar(130, 150, 250) },  // blue
             { new Scalar(130, 40, 50), new Scalar(155, 250, 150) }, // purple
             { new Scalar(0,0, 50), new Scalar(180, 50, 80) },       // gray
             { new Scalar(0, 0, 90), new Scalar(180, 15, 140) }      // white
@@ -40,7 +40,7 @@ public class OhmCalcImageProcessor {
 
     // red wraps around in HSV, so we need two ranges
     private static Scalar LOWER_RED1 = new Scalar(0, 65, 100);
-    private static Scalar UPPER_RED1 = new Scalar(2, 250, 150);
+    private static Scalar UPPER_RED1 = new Scalar(15, 250, 250);
     private static Scalar LOWER_RED2 = new Scalar(171, 65, 50);
     private static Scalar UPPER_RED2 = new Scalar(180, 250, 150);
 

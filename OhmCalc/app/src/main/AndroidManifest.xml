@@ -16,9 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DetectActivity"></activity>
-        <activity android:name=".DisplayActivity"></activity>
-        <activity android:name=".ManualEnterActivity"></activity>
+        <activity android:name=".DetectActivity" android:screenOrientation="landscape"></activity>
+        <activity android:name=".DisplayActivity" android:screenOrientation="landscape"></activity>
+        <activity android:name=".ManualEnterActivity" android:screenOrientation="landscape"></activity>
+
     </application>
 
 
