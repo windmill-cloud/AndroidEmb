@@ -55,12 +55,12 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
 
 
     private static final Scalar COLOR_BOUNDS[][] = {
-            { new Scalar(0, 0, 0),   new Scalar(180, 250, 30) },    // black 0
+            { new Scalar(0, 0, 0),   new Scalar(180, 250, 110) },    // black 0
             { new Scalar(0, 90, 50), new Scalar(20, 250, 100) },    // brown 1
             { new Scalar(0, 0, 0),   new Scalar(0, 0, 0) },         // red (defined by two bounds)
             { new Scalar(7, 170, 80), new Scalar(22, 250, 200)},   // orange 3
             { new Scalar(30, 170, 100), new Scalar(40, 250, 255) }, // yellow 4
-            { new Scalar(40, 40, 30), new Scalar(100, 255, 255) },   // green 5
+            { new Scalar(70, 80, 30), new Scalar(90, 255, 200) },   // green 5
             { new Scalar(110, 80, 80), new Scalar(125, 255, 200) },  // blue 6
             { new Scalar(130, 80, 80), new Scalar(165, 250, 200) }, // purple 7
             { new Scalar(0,0, 50), new Scalar(180, 50, 80) },       // gray 8
@@ -70,16 +70,16 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
     };
 
     // red wraps around in HSV, so we need two ranges
-    private static Scalar LOWER_RED1 = new Scalar(0, 90, 160);
-    private static Scalar UPPER_RED1 = new Scalar(8, 255, 255);
-    private static Scalar LOWER_RED2 = new Scalar(170, 90, 160);
+    private static Scalar LOWER_RED1 = new Scalar(0, 50, 160);
+    private static Scalar UPPER_RED1 = new Scalar(20, 255, 255);
+    private static Scalar LOWER_RED2 = new Scalar(160, 60, 160);
     private static Scalar UPPER_RED2 = new Scalar(179, 255, 255);
 
 
-    private static Scalar LOWER_BROWN1 = new Scalar(0, 80, 50);
-    private static Scalar UPPER_BROWN1 = new Scalar(8, 255, 110);
-    private static Scalar LOWER_BROWN2 = new Scalar(170, 80, 50);
-    private static Scalar UPPER_BROWN2 = new Scalar(179, 255, 110);
+    private static Scalar LOWER_BROWN1 = new Scalar(0, 50, 50);
+    private static Scalar UPPER_BROWN1 = new Scalar(20, 255, 150);
+    private static Scalar LOWER_BROWN2 = new Scalar(160, 20, 50);
+    private static Scalar UPPER_BROWN2 = new Scalar(179, 255, 150);
 
     private SparseIntArray _locationValues = new SparseIntArray(4);
 
@@ -196,20 +196,6 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
     public void onCameraViewStopped() {
     }
 
-    protected void writeFile(){
-        String string = "";
-        Log.i("Write a File", filename);
-        FileOutputStream outputStream;
-
-        try {
-            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
-            outputStream.write(string.getBytes());
-            outputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
         Mat mGray = inputFrame.gray();
@@ -231,23 +217,22 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
         Imgproc.cvtColor(filteredMAt, mHsv, Imgproc.COLOR_BGR2HSV);
         Imgproc.cvtColor(mBgr, mHsv, Imgproc.COLOR_BGR2HSV);
 
-        //Core.inRange(mHsv, COLOR_BOUNDS[5][0], COLOR_BOUNDS[5][1], mask);
-/*
+        //Core.inRange(mHsv, COLOR_BOUNDS[0][0], COLOR_BOUNDS[0][1], mask);
+
         Core.inRange(mHsv, LOWER_RED1, UPPER_RED1, mask);
         Mat rmask2 = new Mat();
         Core.inRange(mHsv, LOWER_RED2, UPPER_RED2, rmask2);
         Core.bitwise_or(mask, rmask2, mask);
 
-*/
 /*
         Core.inRange(mHsv, LOWER_BROWN1, UPPER_BROWN1, mask);
         Mat rmask2 = new Mat();
         Core.inRange(mHsv, LOWER_BROWN2, UPPER_BROWN2, rmask2);
         Core.bitwise_or(mask, rmask2, mask);
-
+*/
 
         Core.bitwise_not(mask,mask);
-*/
+
 
 
 
@@ -267,7 +252,7 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
         if (haarCascade != null) {
             Log.i("haha", "haha");
             if (counter == 6) {
-                haarCascade.detectMultiScale(mGray, faces, 1.5, 50, 2, new Size(120, 40), new Size());
+                haarCascade.detectMultiScale(mGray, faces, 1.5, 25, 2, new Size(120, 40), new Size());
                 counter = 0;
             }
         }
@@ -309,45 +294,19 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
 
         }
 
-        /*
 
-        if(_locationValues.size() >= 3)
-        {
-            // recover the resistor value by iterating through the centroid locations
-            // in an ascending manner and using their associated colour values
-            int k_tens = _locationValues.keyAt(0);
-            int k_units = _locationValues.keyAt(1);
-            int k_power = _locationValues.keyAt(2);
-
-            int value = 10*_locationValues.get(k_tens) + _locationValues.get(k_units);
-            value *= Math.pow(10, _locationValues.get(k_power));
-
-            String valueStr;
-            if(value >= 1e3 && value < 1e6)
-                valueStr = String.valueOf(value/1e3) + " KOhm";
-            else if(value >= 1e6)
-                valueStr = String.valueOf(value/1e6) + " MOhm";
-            else
-                valueStr = String.valueOf(value) + " Ohm";
-
-            if(value <= 1e9)
-                Core.putText(imageMat, valueStr, new Point(cols / 2 - 100, rows / 2 - 200), Core.FONT_HERSHEY_SIMPLEX,
-                        2, new Scalar(153, 0, 255, 255), 3);
-        }
-
-*/
         Mat newRgba = new Mat();
 
-        //mRgba.copyTo(newRgba, mask);
+        mRgba.copyTo(newRgba, mask);
         //Core.bitwise_and(mRgba, mask, newRgba);
 
 
         for (int i = 0; i < facesArray.length; i++){
-            Core.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), new Scalar(100), 3);
-            //Core.rectangle(newRgba, facesArray[i].tl(), facesArray[i].br(), new Scalar(100), 3);
+            //Core.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), new Scalar(100), 3);
+            Core.rectangle(newRgba, facesArray[i].tl(), facesArray[i].br(), new Scalar(100), 3);
         }
-        return mRgba;
-        //return newRgba;
+        //return mRgba;
+        return newRgba;
 
 
         //return inputFrame.rgba();
@@ -380,15 +339,18 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
                 Core.inRange(searchMat, LOWER_RED2, UPPER_RED2, rmask2);
                 Core.bitwise_or(mask, rmask2, mask);
             }
+            else if (i == 9) {
+                continue;
+            }
             else { // other colors
-                Core.inRange(searchMat, COLOR_BOUNDS[i][0], COLOR_BOUNDS[i][1], mask);
+                    Core.inRange(searchMat, COLOR_BOUNDS[i][0], COLOR_BOUNDS[i][1], mask);
             }
 
             Imgproc.findContours(mask, contours, hierarchy, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
             Log.d("ContourSize", String.valueOf(contours.size()));
             for (int contIdx = 0; contIdx < contours.size(); contIdx++) {
                 int area;
-                if ((area = (int)Imgproc.contourArea(contours.get(contIdx))) > (int) (searchMatArea * 2 / 200f)) {
+                if ((area = (int)Imgproc.contourArea(contours.get(contIdx))) > (int) (searchMatArea * 2 / 100f)) {
                     Log.d("area", String.valueOf(area));
                     Moments M = Imgproc.moments(contours.get(contIdx));
                     int cx = (int) (M.get_m10() / M.get_m00());
@@ -414,6 +376,7 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
                             }
                         }
                     }
+
 
                     if(shouldStoreLocation)
                     {
