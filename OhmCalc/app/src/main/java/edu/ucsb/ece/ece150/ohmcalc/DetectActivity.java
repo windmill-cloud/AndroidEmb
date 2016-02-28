@@ -62,7 +62,7 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
             { new Scalar(30, 170, 100), new Scalar(40, 250, 255) }, // yellow 4
             { new Scalar(70, 80, 30), new Scalar(90, 255, 200) },   // green 5
             { new Scalar(110, 80, 80), new Scalar(125, 255, 200) },  // blue 6
-            { new Scalar(130, 80, 80), new Scalar(165, 250, 200) }, // purple 7
+            { new Scalar(125, 40, 80), new Scalar(165, 250, 220) }, // purple 7
             { new Scalar(0,0, 50), new Scalar(180, 50, 80) },       // gray 8
             { new Scalar(0, 0, 90), new Scalar(180, 15, 250) },     // white 9
             { new Scalar(10,100, 100), new Scalar(40, 250, 175) },       // gold 10
@@ -217,13 +217,13 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
         Imgproc.cvtColor(filteredMAt, mHsv, Imgproc.COLOR_BGR2HSV);
         Imgproc.cvtColor(mBgr, mHsv, Imgproc.COLOR_BGR2HSV);
 
-        //Core.inRange(mHsv, COLOR_BOUNDS[0][0], COLOR_BOUNDS[0][1], mask);
-
+        Core.inRange(mHsv, COLOR_BOUNDS[7][0], COLOR_BOUNDS[7][1], mask);
+/*
         Core.inRange(mHsv, LOWER_RED1, UPPER_RED1, mask);
         Mat rmask2 = new Mat();
         Core.inRange(mHsv, LOWER_RED2, UPPER_RED2, rmask2);
         Core.bitwise_or(mask, rmask2, mask);
-
+*/
 /*
         Core.inRange(mHsv, LOWER_BROWN1, UPPER_BROWN1, mask);
         Mat rmask2 = new Mat();
@@ -231,7 +231,7 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
         Core.bitwise_or(mask, rmask2, mask);
 */
 
-        Core.bitwise_not(mask,mask);
+        Core.bitwise_not(mask, mask);
 
 
 
@@ -274,7 +274,7 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
 
             Point rectCenter = new Point(facesArray[i].tl().x + facesArray[i].width / 2,
                     facesArray[i].tl().y + facesArray[i].height / 2);
-            Point smallRectTl = new Point(rectCenter.x - 0.78 * facesArray[i].width / 2,
+            Point smallRectTl = new Point(rectCenter.x - 0.75 * facesArray[i].width / 2,
                     rectCenter.y - 0.6 * facesArray[i].height / 2);
             Point smallRectBr = new Point(rectCenter.x + 0.6 * facesArray[i].width / 2,
                     rectCenter.y + 0.6 * facesArray[i].height / 2);
@@ -350,7 +350,7 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
             Log.d("ContourSize", String.valueOf(contours.size()));
             for (int contIdx = 0; contIdx < contours.size(); contIdx++) {
                 int area;
-                if ((area = (int)Imgproc.contourArea(contours.get(contIdx))) > (int) (searchMatArea * 2 / 100f)) {
+                if ((area = (int)Imgproc.contourArea(contours.get(contIdx))) > (int) (searchMatArea * 2 / 200f)) {
                     Log.d("area", String.valueOf(area));
                     Moments M = Imgproc.moments(contours.get(contIdx));
                     int cx = (int) (M.get_m10() / M.get_m00());
@@ -411,6 +411,26 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
                 valueStr = String.valueOf(value/1e6) + " MOhm";
             else
                 valueStr = String.valueOf(value) + " Ohm";
+
+            if(locValues.size() >= 4){
+                k_tens = locValues.keyAt(0);
+                int k_unit1 = locValues.keyAt(1);
+                int k_unit2 = locValues.keyAt(2);
+                k_power = locValues.keyAt(3);
+
+                if(k_tens == 1 && k_unit1 == 0 && k_unit2 == 0 && k_power == 1) {
+                    value = 100 * locValues.get(k_tens) + 10 * locValues.get(k_unit1) + locValues.get(k_unit2);
+                    value *= Math.pow(10, locValues.get(k_power));
+
+                    if (value >= 1e3 && value < 1e6)
+                        valueStr = String.valueOf(value / 1e3) + " KOhm";
+                    else if (value >= 1e6)
+                        valueStr = String.valueOf(value / 1e6) + " MOhm";
+                    else
+                        valueStr = String.valueOf(value) + " Ohm";
+                }
+            }
+
 
             if(value <= 1e9)
                 return valueStr;
