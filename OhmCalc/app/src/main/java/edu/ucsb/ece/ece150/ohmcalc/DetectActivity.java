@@ -55,14 +55,14 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
 
 
     private static final Scalar COLOR_BOUNDS[][] = {
-            { new Scalar(0, 0, 0),   new Scalar(180, 250, 110) },    // black 0
+            { new Scalar(0, 0, 0),   new Scalar(180, 250, 90) },    // black 0
             { new Scalar(0, 90, 50), new Scalar(20, 250, 100) },    // brown 1
             { new Scalar(0, 0, 0),   new Scalar(0, 0, 0) },         // red (defined by two bounds)
-            { new Scalar(7, 170, 80), new Scalar(22, 250, 200)},   // orange 3
+            { new Scalar(5, 80, 60), new Scalar(15, 250, 250)},   // orange 3
             { new Scalar(30, 170, 100), new Scalar(40, 250, 255) }, // yellow 4
-            { new Scalar(70, 80, 30), new Scalar(90, 255, 200) },   // green 5
-            { new Scalar(110, 80, 80), new Scalar(125, 255, 200) },  // blue 6
-            { new Scalar(125, 40, 80), new Scalar(165, 250, 220) }, // purple 7
+            { new Scalar(70, 80, 100), new Scalar(95, 255, 200) },   // green 5
+            { new Scalar(100, 60, 60), new Scalar(115, 255, 230) },  // blue 6
+            { new Scalar(120, 40, 100), new Scalar(140, 250, 220) }, // purple 7
             { new Scalar(0,0, 50), new Scalar(180, 50, 80) },       // gray 8
             { new Scalar(0, 0, 90), new Scalar(180, 15, 250) },     // white 9
             { new Scalar(10,100, 100), new Scalar(40, 250, 175) },       // gold 10
@@ -70,16 +70,16 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
     };
 
     // red wraps around in HSV, so we need two ranges
-    private static Scalar LOWER_RED1 = new Scalar(0, 50, 160);
-    private static Scalar UPPER_RED1 = new Scalar(20, 255, 255);
-    private static Scalar LOWER_RED2 = new Scalar(160, 60, 160);
-    private static Scalar UPPER_RED2 = new Scalar(179, 255, 255);
+    private static Scalar LOWER_RED1 = new Scalar(0, 60, 80);
+    private static Scalar UPPER_RED1 = new Scalar(10, 255, 200);
+    private static Scalar LOWER_RED2 = new Scalar(160, 60, 80);
+    private static Scalar UPPER_RED2 = new Scalar(179, 255, 200);
 
 
-    private static Scalar LOWER_BROWN1 = new Scalar(0, 50, 50);
-    private static Scalar UPPER_BROWN1 = new Scalar(20, 255, 150);
-    private static Scalar LOWER_BROWN2 = new Scalar(160, 20, 50);
-    private static Scalar UPPER_BROWN2 = new Scalar(179, 255, 150);
+    private static Scalar LOWER_BROWN1 = new Scalar(0, 50, 20);
+    private static Scalar UPPER_BROWN1 = new Scalar(20, 100, 100);
+    private static Scalar LOWER_BROWN2 = new Scalar(160, 20, 20);
+    private static Scalar UPPER_BROWN2 = new Scalar(179, 100, 100);
 
     private SparseIntArray _locationValues = new SparseIntArray(4);
 
@@ -213,11 +213,11 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
 
 
         Imgproc.cvtColor(mRgba, mBgr, Imgproc.COLOR_RGBA2BGR);
-        Imgproc.bilateralFilter(mBgr, filteredMAt, 5, 80, 80);
+        Imgproc.bilateralFilter(mBgr, filteredMAt, 7, 80, 80);
         Imgproc.cvtColor(filteredMAt, mHsv, Imgproc.COLOR_BGR2HSV);
         Imgproc.cvtColor(mBgr, mHsv, Imgproc.COLOR_BGR2HSV);
 
-        Core.inRange(mHsv, COLOR_BOUNDS[7][0], COLOR_BOUNDS[7][1], mask);
+        Core.inRange(mHsv, COLOR_BOUNDS[3][0], COLOR_BOUNDS[3][1], mask);
 /*
         Core.inRange(mHsv, LOWER_RED1, UPPER_RED1, mask);
         Mat rmask2 = new Mat();
@@ -274,10 +274,10 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
 
             Point rectCenter = new Point(facesArray[i].tl().x + facesArray[i].width / 2,
                     facesArray[i].tl().y + facesArray[i].height / 2);
-            Point smallRectTl = new Point(rectCenter.x - 0.75 * facesArray[i].width / 2,
-                    rectCenter.y - 0.6 * facesArray[i].height / 2);
+            Point smallRectTl = new Point(rectCenter.x - 0.5 * facesArray[i].width / 2,
+                    rectCenter.y + 0.02 * facesArray[i].height / 2);
             Point smallRectBr = new Point(rectCenter.x + 0.6 * facesArray[i].width / 2,
-                    rectCenter.y + 0.6 * facesArray[i].height / 2);
+                    rectCenter.y + 0.5 * facesArray[i].height / 2);
             Point strPos = new Point(facesArray[i].tl().x , facesArray[i].tl().y - 15);
 
             Rect smallRoi = new Rect(smallRectTl, smallRectBr);
@@ -339,7 +339,7 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
                 Core.inRange(searchMat, LOWER_RED2, UPPER_RED2, rmask2);
                 Core.bitwise_or(mask, rmask2, mask);
             }
-            else if (i == 9) {
+            else if (i == 9 || i == 8) {
                 continue;
             }
             else { // other colors
@@ -350,7 +350,7 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
             Log.d("ContourSize", String.valueOf(contours.size()));
             for (int contIdx = 0; contIdx < contours.size(); contIdx++) {
                 int area;
-                if ((area = (int)Imgproc.contourArea(contours.get(contIdx))) > (int) (searchMatArea * 2 / 200f)) {
+                if ((area = (int)Imgproc.contourArea(contours.get(contIdx))) > (int) (searchMatArea * 2 / 280f)) {
                     Log.d("area", String.valueOf(area));
                     Moments M = Imgproc.moments(contours.get(contIdx));
                     int cx = (int) (M.get_m10() / M.get_m00());

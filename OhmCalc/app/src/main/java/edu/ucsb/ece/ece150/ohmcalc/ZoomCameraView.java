@@ -7,6 +7,8 @@ import android.widget.SeekBar;
 
 import org.opencv.android.JavaCameraView;
 
+import java.util.List;
+
 /**
  * Created by xuanwang on 2/11/16.
  */
@@ -73,8 +75,23 @@ public class ZoomCameraView extends JavaCameraView {
 
         boolean ret = super.initializeCamera(width, height);
 
-
         Camera.Parameters params = mCamera.getParameters();
+
+        List<String> FocusModes = params.getSupportedFocusModes();
+        if (FocusModes != null && FocusModes.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO))
+        {
+            params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
+        }
+        else if(FocusModes != null && FocusModes.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE))
+        {
+            params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+        }
+
+        List<String> FlashModes = params.getSupportedFlashModes();
+        if(FlashModes != null && FlashModes.contains(Camera.Parameters.FLASH_MODE_TORCH))
+        {
+            params.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+        }
 
         if(params.isZoomSupported())
             enableZoomControls(params);

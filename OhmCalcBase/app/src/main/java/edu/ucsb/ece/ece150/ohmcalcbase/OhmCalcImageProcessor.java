@@ -25,14 +25,14 @@ public class OhmCalcImageProcessor {
     private static final int NUM_CODES = 10;
 
     private static final Scalar COLOR_BOUNDS[][] = {
-            { new Scalar(0, 0, 0),   new Scalar(180, 250, 110) },    // black 0
+            { new Scalar(0, 0, 0),   new Scalar(180, 250, 90) },    // black 0
             { new Scalar(0, 90, 50), new Scalar(20, 250, 100) },    // brown 1
             { new Scalar(0, 0, 0),   new Scalar(0, 0, 0) },         // red (defined by two bounds)
             { new Scalar(7, 170, 80), new Scalar(22, 250, 200)},   // orange 3
             { new Scalar(30, 170, 100), new Scalar(40, 250, 255) }, // yellow 4
-            { new Scalar(70, 80, 30), new Scalar(90, 255, 200) },   // green 5
-            { new Scalar(110, 80, 80), new Scalar(125, 255, 200) },  // blue 6
-            { new Scalar(125, 40, 80), new Scalar(165, 250, 220) }, // purple 7
+            { new Scalar(70, 80, 100), new Scalar(100, 255, 200) },   // green 5
+            { new Scalar(105, 80, 100), new Scalar(115, 255, 200) },  // blue 6
+            { new Scalar(120, 40, 100), new Scalar(140, 250, 220) }, // purple 7
             { new Scalar(0,0, 50), new Scalar(180, 50, 80) },       // gray 8
             { new Scalar(0, 0, 90), new Scalar(180, 15, 250) },     // white 9
             { new Scalar(10,100, 100), new Scalar(40, 250, 175) },       // gold 10
@@ -40,16 +40,16 @@ public class OhmCalcImageProcessor {
     };
 
     // red wraps around in HSV, so we need two ranges
-    private static Scalar LOWER_RED1 = new Scalar(0, 50, 160);
-    private static Scalar UPPER_RED1 = new Scalar(20, 255, 255);
-    private static Scalar LOWER_RED2 = new Scalar(160, 60, 160);
-    private static Scalar UPPER_RED2 = new Scalar(179, 255, 255);
+    private static Scalar LOWER_RED1 = new Scalar(0, 60, 80);
+    private static Scalar UPPER_RED1 = new Scalar(10, 255, 200);
+    private static Scalar LOWER_RED2 = new Scalar(160, 60, 80);
+    private static Scalar UPPER_RED2 = new Scalar(179, 255, 200);
 
 
-    private static Scalar LOWER_BROWN1 = new Scalar(0, 50, 50);
-    private static Scalar UPPER_BROWN1 = new Scalar(20, 255, 150);
-    private static Scalar LOWER_BROWN2 = new Scalar(160, 20, 50);
-    private static Scalar UPPER_BROWN2 = new Scalar(179, 255, 150);
+    private static Scalar LOWER_BROWN1 = new Scalar(0, 50, 20);
+    private static Scalar UPPER_BROWN1 = new Scalar(20, 100, 100);
+    private static Scalar LOWER_BROWN2 = new Scalar(160, 20, 20);
+    private static Scalar UPPER_BROWN2 = new Scalar(179, 100, 100);
 
 
     private SparseIntArray _locationValues = new SparseIntArray(4);
@@ -59,14 +59,14 @@ public class OhmCalcImageProcessor {
         Mat imageMat = frame.rgba();
         int cols = imageMat.cols();
         int rows = imageMat.rows();
-        Scalar color = new Scalar(153, 0, 255, 255);
+        Scalar color = new Scalar(153, 160, 160, 255);
 
-        Mat subMat = imageMat.submat(rows/2 -20, rows/2+20, cols/2 - 100, cols/2 + 100);
-        Imgproc.rectangle(imageMat, new Point(cols / 2 - 80, rows / 2 - 20), new Point(cols / 2 + 60, rows / 2 + 20), color, 3);
+        Mat subMat = imageMat.submat(rows/2 -10, rows/2+20, cols/2 - 80, cols/2 + 60);
+        Imgproc.rectangle(imageMat, new Point(cols / 2 - 80, rows / 2 - 10), new Point(cols / 2 + 60, rows / 2 + 20), color, 3);
 
         Mat filteredMat = new Mat();
         Imgproc.cvtColor(subMat, subMat, Imgproc.COLOR_RGBA2BGR);
-        Imgproc.bilateralFilter(subMat, filteredMat, 5, 80, 80);
+        Imgproc.bilateralFilter(subMat, filteredMat, 7, 80, 80);
         Imgproc.cvtColor(filteredMat, filteredMat, Imgproc.COLOR_BGR2HSV);
 
         findLocations(filteredMat);
@@ -92,7 +92,7 @@ public class OhmCalcImageProcessor {
 
             if(value <= 1e9)
                 Imgproc.putText(imageMat, valueStr, new Point(cols / 2 - 100, rows / 2 - 200), Core.FONT_HERSHEY_SIMPLEX,
-                        2, new Scalar(153, 0, 255, 255), 3);
+                        2, color, 3);
         }
 
         //Mat rect0 = new Mat(new Rect(0,0,cols / 2 - 100, rows));
