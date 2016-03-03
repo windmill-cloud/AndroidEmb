@@ -92,7 +92,7 @@ public class OhmCalcCameraView extends JavaCameraView {
         List<String> FlashModes = params.getSupportedFlashModes();
         if(FlashModes != null && FlashModes.contains(Camera.Parameters.FLASH_MODE_TORCH))
         {
-            //params.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+            params.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
         }
 
         if(params.isZoomSupported())
