@@ -1,3 +1,50 @@
 <resources>
     <string name="app_name">OhmCalc</string>
+
+    <string name="action_setting"></string>
+
+    <string-array name="ring1_color">
+        <item>Black</item>
+        <item>Brown</item>
+        <item>Red</item>
+        <item>Orange</item>
+        <item>Yellow</item>
+        <item>Green</item>
+        <item>Blue</item>
+        <item>Purple</item>
+        <item>Grey</item>
+        <item>White</item>
+    </string-array>
+
+    <string-array name="ring4_color">
+        <item>Silver</item>
+        <item>Gold</item>
+        <item>Black</item>
+        <item>Brown</item>
+        <item>Red</item>
+        <item>Orange</item>
+        <item>Yellow</item>
+        <item>Green</item>
+        <item>Blue</item>
+        <item>Purple</item>
+    </string-array>
+
+    <string-array name="ring5_color">
+        <item>Silver</item>
+        <item>Gold</item>
+        <item>Brown</item>
+        <item>Red</item>
+        <item>Green</item>
+        <item>Blue</item>
+        <item>Purple</item>
+        <item>Grey</item>
+    </string-array>
+
+    <string-array name="ring6_color">
+        <item>Brown</item>
+        <item>Red</item>
+        <item>Orange</item>
+        <item>Yellow</item>
+
+    </string-array>
 </resources>
