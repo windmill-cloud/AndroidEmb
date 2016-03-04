@@ -37,7 +37,6 @@ import java.util.List;
 
 
 public class DetectActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener2 {
-
     //private CameraBridgeViewBase mOpenCvCameraView;
 
     protected ZoomCameraView mOpenCvCameraView;

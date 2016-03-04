@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">my-gdx-game</string>
+    <string name="Default_resistance">101</string>
+    <string name="Resist">Resistance</string>
+    <string name="Tolerance">Tolerance</string>
+    <string name="TC">Temperature Coefficient</string>
+    <string name="btn3D">Vew Model</string>
+
+
+    <string-array name="Tolerance">
+        <item>10%</item>
+        <item>5%</item>
+        <item>2%</item>
+        <item>1%</item>
+        <item>0.5%</item>
+        <item>0.25%</item>
+        <item>0.1%</item>
+    </string-array>
+    <string-array name="TC">
+        <item>100ppm</item>
+        <item>50ppm</item>
+        <item>25ppm</item>
+        <item>15ppm</item>
+    </string-array>
+    <string-array name="CBT">
+        <item>3 Band</item>
+        <item>4 Band</item>
+        <item>5 Band</item>
+        <item>6 Band</item>
+    </string-array>
+
+
+<string name="action_setting"></string>
+
+<string-array name="ring1_color">
+    <item>Black</item>
+    <item>Brown</item>
+    <item>Red</item>
+    <item>Orange</item>
+    <item>Yellow</item>
+    <item>Green</item>
+    <item>Blue</item>
+    <item>Purple</item>
+    <item>Grey</item>
+    <item>White</item>
+</string-array>
+
+<string-array name="ring4_color">
+    <item>Silver</item>
+    <item>Gold</item>
+    <item>Black</item>
+    <item>Brown</item>
+    <item>Red</item>
+    <item>Orange</item>
+    <item>Yellow</item>
+    <item>Green</item>
+    <item>Blue</item>
+    <item>Purple</item>
+</string-array>
+
+<string-array name="ring5_color">
+    <item>Silver</item>
+    <item>Gold</item>
+    <item>Brown</item>
+    <item>Red</item>
+    <item>Green</item>
+    <item>Blue</item>
+    <item>Purple</item>
+    <item>Grey</item>
+</string-array>
+
+<string-array name="ring6_color">
+    <item>Brown</item>
+    <item>Red</item>
+    <item>Orange</item>
+    <item>Yellow</item>
+
+</string-array>
+</resources>
