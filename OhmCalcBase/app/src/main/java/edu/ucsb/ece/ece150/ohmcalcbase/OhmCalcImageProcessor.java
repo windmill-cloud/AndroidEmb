@@ -24,25 +24,33 @@ public class OhmCalcImageProcessor {
 
     private static final int NUM_CODES = 10;
 
-    // HSV colour bounds
     private static final Scalar COLOR_BOUNDS[][] = {
-            { new Scalar(0, 0, 0),   new Scalar(180, 250, 50) },    // black
-            { new Scalar(0, 90, 10), new Scalar(15, 250, 100) },    // brown
+            { new Scalar(0, 0, 0),   new Scalar(180, 250, 90) },    // black 0
+            { new Scalar(0, 90, 50), new Scalar(20, 250, 100) },    // brown 1
             { new Scalar(0, 0, 0),   new Scalar(0, 0, 0) },         // red (defined by two bounds)
-            { new Scalar(4, 100, 100), new Scalar(9, 250, 150) },   // orange
-            { new Scalar(20, 130, 100), new Scalar(30, 250, 160) }, // yellow
-            { new Scalar(45, 50, 60), new Scalar(72, 250, 150) },   // green
-            { new Scalar(80, 50, 50), new Scalar(106, 250, 150) },  // blue
-            { new Scalar(130, 40, 50), new Scalar(155, 250, 150) }, // purple
-            { new Scalar(0,0, 50), new Scalar(180, 50, 80) },       // gray
-            { new Scalar(0, 0, 90), new Scalar(180, 15, 140) }      // white
+            { new Scalar(7, 170, 80), new Scalar(22, 250, 200)},   // orange 3
+            { new Scalar(30, 170, 100), new Scalar(40, 250, 255) }, // yellow 4
+            { new Scalar(70, 80, 100), new Scalar(100, 255, 200) },   // green 5
+            { new Scalar(105, 80, 100), new Scalar(115, 255, 200) },  // blue 6
+            { new Scalar(120, 40, 100), new Scalar(140, 250, 220) }, // purple 7
+            { new Scalar(0,0, 50), new Scalar(180, 50, 80) },       // gray 8
+            { new Scalar(0, 0, 90), new Scalar(180, 15, 250) },     // white 9
+            { new Scalar(10,100, 100), new Scalar(40, 250, 175) },       // gold 10
+            { new Scalar(0, 0, 70), new Scalar(180, 15, 90) }      // silver 11
     };
 
     // red wraps around in HSV, so we need two ranges
-    private static Scalar LOWER_RED1 = new Scalar(0, 65, 100);
-    private static Scalar UPPER_RED1 = new Scalar(2, 250, 150);
-    private static Scalar LOWER_RED2 = new Scalar(171, 65, 50);
-    private static Scalar UPPER_RED2 = new Scalar(180, 250, 150);
+    private static Scalar LOWER_RED1 = new Scalar(0, 60, 80);
+    private static Scalar UPPER_RED1 = new Scalar(10, 255, 200);
+    private static Scalar LOWER_RED2 = new Scalar(160, 60, 80);
+    private static Scalar UPPER_RED2 = new Scalar(179, 255, 200);
+
+
+    private static Scalar LOWER_BROWN1 = new Scalar(0, 50, 20);
+    private static Scalar UPPER_BROWN1 = new Scalar(20, 100, 100);
+    private static Scalar LOWER_BROWN2 = new Scalar(160, 20, 20);
+    private static Scalar UPPER_BROWN2 = new Scalar(179, 100, 100);
+
 
     private SparseIntArray _locationValues = new SparseIntArray(4);
 
@@ -51,11 +59,14 @@ public class OhmCalcImageProcessor {
         Mat imageMat = frame.rgba();
         int cols = imageMat.cols();
         int rows = imageMat.rows();
+        Scalar color = new Scalar(153, 160, 160, 255);
 
-        Mat subMat = imageMat.submat(rows/2 -30, rows/2+30, cols/2 - 100, cols/2 + 100);
+        Mat subMat = imageMat.submat(rows/2 -10, rows/2+20, cols/2 - 80, cols/2 + 60);
+        Imgproc.rectangle(imageMat, new Point(cols / 2 - 80, rows / 2 - 10), new Point(cols / 2 + 60, rows / 2 + 20), color, 3);
+
         Mat filteredMat = new Mat();
         Imgproc.cvtColor(subMat, subMat, Imgproc.COLOR_RGBA2BGR);
-        Imgproc.bilateralFilter(subMat, filteredMat, 5, 80, 80);
+        Imgproc.bilateralFilter(subMat, filteredMat, 7, 80, 80);
         Imgproc.cvtColor(filteredMat, filteredMat, Imgproc.COLOR_BGR2HSV);
 
         findLocations(filteredMat);
@@ -81,13 +92,13 @@ public class OhmCalcImageProcessor {
 
             if(value <= 1e9)
                 Imgproc.putText(imageMat, valueStr, new Point(cols / 2 - 100, rows / 2 - 200), Core.FONT_HERSHEY_SIMPLEX,
-                        2, new Scalar(153, 0, 255, 255), 3);
+                        2, color, 3);
         }
 
         //Mat rect0 = new Mat(new Rect(0,0,cols / 2 - 100, rows));
 
 
-        Scalar color = new Scalar(153, 0, 255, 255);
+
         //Rect roi = new Rect(0, 0, cols / 2 - 100, rows);
         //color(roi.size(), 8, Scalar(0, 125, 125))
         //Scalar colorBlack = new Scalar(0, 0, 0, 0);
@@ -111,13 +122,23 @@ public class OhmCalcImageProcessor {
             List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
             Mat hierarchy = new Mat();
 
-            if(i == 2)
+            if(i == 1)
             {
+                // combine the two ranges for red
+                Core.inRange(searchMat, LOWER_BROWN1, UPPER_BROWN1, mask);
+                Mat rmask2 = new Mat();
+                Core.inRange(searchMat, LOWER_BROWN2, UPPER_BROWN2, rmask2);
+                Core.bitwise_or(mask, rmask2, mask);
+            }
+            else if (i == 2){ // if searching red
                 // combine the two ranges for red
                 Core.inRange(searchMat, LOWER_RED1, UPPER_RED1, mask);
                 Mat rmask2 = new Mat();
                 Core.inRange(searchMat, LOWER_RED2, UPPER_RED2, rmask2);
                 Core.bitwise_or(mask, rmask2, mask);
+            }
+            else if (i == 9) {
+                continue;
             }
             else
                 Core.inRange(searchMat, COLOR_BOUNDS[i][0], COLOR_BOUNDS[i][1], mask);
@@ -126,7 +147,7 @@ public class OhmCalcImageProcessor {
             for (int contIdx = 0; contIdx < contours.size(); contIdx++)
             {
                 int area;
-                if ((area = (int)Imgproc.contourArea(contours.get(contIdx))) > 20)
+                if ((area = (int)Imgproc.contourArea(contours.get(contIdx))) > 30)
                 {
                     Moments M = Imgproc.moments(contours.get(contIdx));
                     int cx = (int) (M.get_m10() / M.get_m00());

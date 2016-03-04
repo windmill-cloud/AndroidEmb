@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/Benn/w16android/Resistor_color_band/core/build/libs/core-1.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="9cd3368f67e7f2f1fc47ae6121d95ebadc60f02b">
+        <dex dex="/Users/Benn/w16android/Resistor_color_band/android/build/intermediates/pre-dexed/debug/core-1.0_61d5def21a18b87b6c07a206c12700975a95cf89.jar" />
+    </item>
+
+</items>
