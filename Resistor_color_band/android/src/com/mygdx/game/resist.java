@@ -74,7 +74,7 @@ public class resist extends AndroidApplication implements MyGdxGame.MyGameCallba
     }
     @Override
     public void onStartActivityA() {
-        Intent intent = new Intent(this, AndroidLauncher.class);
+        Intent intent = new Intent(this, resist.class);
         startActivity(intent);
     }
 
