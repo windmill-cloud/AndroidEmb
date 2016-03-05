@@ -13,13 +13,26 @@
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/CBT"
+        android:entries="@array/CBTT"
+        android:spinnerMode="dialog"
+        android:layout_above="@+id/textView2"
+        android:layout_marginBottom="26dp"
+        android:layout_alignRight="@+id/textView3"
+        android:layout_alignEnd="@+id/textView3"
+        android:layout_alignLeft="@+id/tolerance"
+        android:layout_alignStart="@+id/tolerance" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/tolerance"
         android:entries="@array/Tolerance"
         android:spinnerMode="dialog"
         android:layout_above="@+id/textView3"
         android:layout_alignLeft="@+id/textView3"
-        android:layout_alignStart="@+id/textView3"
         android:layout_marginBottom="26dp"
+        android:layout_alignStart="@+id/textView3"
         android:layout_alignRight="@+id/textView3"
         android:layout_alignEnd="@+id/textView3" />
 
@@ -29,10 +42,10 @@
         android:id="@+id/tc"
         android:entries="@array/TC"
         android:spinnerMode="dialog"
-        android:layout_above="@+id/textView4"
+        android:layout_above="@+id/btn3D"
         android:layout_alignLeft="@+id/textView3"
         android:layout_alignStart="@+id/textView3"
-        android:layout_marginBottom="26dp"
+        android:layout_marginBottom="80dp"
         android:layout_alignRight="@+id/textView3"
         android:layout_alignEnd="@+id/textView3" />
 
@@ -46,6 +59,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:focusable="false"
+        android:layout_marginTop="10dp"
         android:textSize="30dp" />
 
     <EditText
@@ -58,6 +72,15 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:inputType="number" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Color Band Type"
+        android:id="@+id/textView4"
+        android:textSize="20dp"
+        android:layout_above="@+id/CBT"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -88,26 +111,14 @@
         android:layout_alignLeft="@+id/textView4"
         android:layout_alignStart="@+id/textView4" />
 
-    <Spinner
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/CBT"
-        android:entries="@array/CBT"
-        android:layout_above="@+id/btn3D"
-        android:layout_marginBottom="60dp"
-        android:layout_alignRight="@+id/tc"
-        android:layout_alignEnd="@+id/tc"
-        android:layout_alignLeft="@+id/tc"
-        android:layout_alignStart="@+id/tc"
-        android:spinnerMode="dialog" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Color Band Type"
-        android:id="@+id/textView4"
-        android:textSize="20dp"
-        android:layout_above="@+id/CBT"
-        android:layout_centerHorizontal="true" />
+        android:id="@+id/goBack"
+        android:background="@android:drawable/ic_menu_close_clear_cancel"
+        android:layout_gravity="right|top"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

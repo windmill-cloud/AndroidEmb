@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">my-gdx-game</string>
+    <string name="app_name">OhmCalc</string>
     <string name="Default_resistance">101</string>
     <string name="Resist">Resistance</string>
     <string name="Tolerance">Tolerance</string>
@@ -24,7 +24,7 @@
         <item>25ppm</item>
         <item>15ppm</item>
     </string-array>
-    <string-array name="CBT">
+    <string-array name="CBTT">
         <item>3 Band</item>
         <item>4 Band</item>
         <item>5 Band</item>

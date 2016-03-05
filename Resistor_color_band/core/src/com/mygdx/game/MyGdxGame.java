@@ -63,7 +63,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
 		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
-		logo = new Texture("badlogic.jpg");
+		logo = new Texture("goback.png");
 
 		cam = new PerspectiveCamera(70, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		cam.position.set(100f, 100f, 100f);
@@ -114,7 +114,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		modelBatch.render(instance, environment);
 		modelBatch.end();
 		sprites.begin();
-		sprites.draw(logo, 50, 50, 200, 200);
+		sprites.draw(logo, 50, 50, 150, 150);
 		sprites.end();
 	}
 

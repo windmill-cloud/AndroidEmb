@@ -17,7 +17,7 @@ public class FirstOrderInputProcessor extends CameraInputController {
         /* add the condition for finding whether we are clicking the lower-left logo position */
 //        Gdx.app.log("MyTag", "LOL");
         int height= Gdx.graphics.getHeight();
-        if (pointer==0 && screenX > 50 && screenX <200 && screenY >height-200 && screenY < height-50) {
+        if (pointer==0 && screenX > 50 && screenX <150 && screenY >height-150 && screenY < height-50) {
 
             if (changeColorsAction != null) {
                 Gdx.app.log("MyTag", "DOT");
