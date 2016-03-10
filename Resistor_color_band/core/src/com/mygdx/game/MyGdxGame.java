@@ -63,7 +63,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
 		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
-		logo = new Texture("badlogic.jpg");
+		logo = new Texture("goback.png");
 
 		cam = new PerspectiveCamera(70, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		cam.position.set(100f, 100f, 100f);
@@ -114,7 +114,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		modelBatch.render(instance, environment);
 		modelBatch.end();
 		sprites.begin();
-		sprites.draw(logo, 50, 50, 200, 200);
+		sprites.draw(logo, 50, 50, 150, 150);
 		sprites.end();
 	}
 
@@ -160,7 +160,9 @@ public class MyGdxGame extends ApplicationAdapter {
 		instance.materials.get(4).set(ColorAttribute.createDiffuse(col[4]));
 		instance.materials.get(8).set(ColorAttribute.createDiffuse(col[5]));
 		instance.materials.get(0).set(ColorAttribute.createDiffuse(col[6]));
-		instance.materials.get(5).set(ColorAttribute.createDiffuse(Color.SLATE));
+//		instance.materials.get(5).set(ColorAttribute.createDiffuse(Color.SLATE));
+		instance.materials.get(5).set(ColorAttribute.createDiffuse(Color.valueOf("5AAEDBFF")));
+
 		instance.materials.get(3).set(ColorAttribute.createDiffuse(Color.WHITE));
 		instance.materials.get(2).set(ColorAttribute.createDiffuse(Color.WHITE));
 
@@ -179,34 +181,91 @@ public class MyGdxGame extends ApplicationAdapter {
 	public Color which1(int n) {
 		switch (n) {
 			case 0:
-				return Color.BLACK;
+//				return Color.BLACK;
+				return Color.valueOf("000000FF");
+
 			case 1:
-				return Color.BROWN;
+//				return Color.BROWN;
+				return Color.valueOf("AA5A2AFF");
+
 			case 2:
-				return Color.RED;
+//				return Color.RED;
+				return Color.valueOf("CC0000FF");
+
 			case 3:
-				return Color.ORANGE;
+//				return Color.ORANGE;
+				return Color.valueOf("FF8800FF");
+
 			case 4:
-				return Color.YELLOW;
+//				return Color.YELLOW;
+				return Color.valueOf("FFBB00FF");
+
 			case 5:
-				return Color.GREEN;
+//				return Color.GREEN;
+				return Color.valueOf("99CC00FF");
+
 			case 6:
-				return Color.BLUE;
+//				return Color.BLUE;
+				return Color.valueOf("056396FF");
+
 			case 7:
-				return Color.VIOLET;
+//				return Color.VIOLET;
+				return Color.valueOf("9933CCFF");
+
 			case 8:
-				return Color.GRAY;
+//				return Color.GRAY;
+				return Color.valueOf("777777FF");
+
 			case 9:
 				return Color.WHITE;
+
 			case 10:
-				return Color.GOLD;
+//				return Color.GOLD;
+				return Color.valueOf("FFD700FF");
+
 			case 11:
-				return Color.LIGHT_GRAY;
+//				return Color.silver;
+				return Color.valueOf("C0C0C0FF");
+
 			case -9:
-				return Color.SLATE;
+		//		return Color.SLATE;
+				return Color.valueOf("5AAEDBFF");
+
 			default:return null;
 
 		}
 	}
+//	public Color which1(int n) {
+//		switch (n) {
+//			case 0:
+//				return Color.BLACK;
+//			case 1:
+//				return Color.BROWN;
+//			case 2:
+//				return Color.RED;
+//			case 3:
+//				return Color.ORANGE;
+//			case 4:
+//				return Color.YELLOW;
+//			case 5:
+//				return Color.GREEN;
+//			case 6:
+//				return Color.BLUE;
+//			case 7:
+//				return Color.VIOLET;
+//			case 8:
+//				return Color.GRAY;
+//			case 9:
+//				return Color.WHITE;
+//			case 10:
+//				return Color.GOLD;
+//			case 11:
+//				return Color.LIGHT_GRAY;
+//			case -9:
+//				return Color.SLATE;
+//			default:return null;
+//
+//		}
+//	}
 
 }

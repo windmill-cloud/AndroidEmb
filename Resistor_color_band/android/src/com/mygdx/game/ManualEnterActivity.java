@@ -97,7 +97,7 @@ public class ManualEnterActivity extends Activity {
             public void onClick(View v) {
                 b1.setBackgroundColor(0xFFBFBFBF);
                 b2.setBackgroundColor(0xFFBFBFBF);
-                b3.setBackgroundColor(0xFF00BFBF);
+                b3.setBackgroundColor(0xFF00BFFF);
                 s3.setVisibility(View.VISIBLE);
                 s6.setVisibility(View.VISIBLE);
                 c.setVisibility(View.VISIBLE);
@@ -213,7 +213,15 @@ public class ManualEnterActivity extends Activity {
         else {
             resistance4 = (10.0 * code1 + code2) * Math.pow(10.0, code4);
         }
-        r.setText(String.valueOf(resistance4)+" Ohm");
+
+        String res4Str;
+        if (resistance4 >= 1e3 && resistance4 < 1e6)
+            res4Str = String.valueOf(resistance4 / 1e3) + " KOhm";
+        else if (resistance4 >= 1e6)
+            res4Str = String.valueOf(resistance4 / 1e6) + " MOhm";
+        else
+            res4Str = String.valueOf(resistance4) + " Ohm";
+        r.setText(res4Str + " Ohm");
         t.setText("   +/-"+ String.valueOf(code5)+"%");
         c.setText("   " + String.valueOf(code6)+"ppm");
     }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">my-gdx-game</string>
-    <string name="Default_resistance">101</string>
+    <string name="app_name">OhmCalc</string>
+    <string name="Default_resistance">666</string>
     <string name="Resist">Resistance</string>
     <string name="Tolerance">Tolerance</string>
     <string name="TC">Temperature Coefficient</string>

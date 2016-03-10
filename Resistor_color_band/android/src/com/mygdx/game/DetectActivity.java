@@ -63,7 +63,7 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
             { new Scalar(175, 40, 60), new Scalar(180, 250, 250)},   // orange 3
             { new Scalar(30, 170, 100), new Scalar(40, 250, 255) }, // yellow 4
             { new Scalar(70, 80, 100), new Scalar(95, 255, 200) },   // green 5
-            { new Scalar(100, 60, 60), new Scalar(115, 255, 230) },  // blue 6
+            { new Scalar(98, 60, 60), new Scalar(112, 255, 230) },  // blue 6
             { new Scalar(120, 40, 100), new Scalar(140, 250, 220) }, // purple 7
             { new Scalar(0,0, 50), new Scalar(180, 50, 80) },       // gray 8
             { new Scalar(0, 0, 90), new Scalar(180, 15, 250) },     // white 9
@@ -71,16 +71,16 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
             { new Scalar(0, 0, 70), new Scalar(180, 15, 90) }      // silver 11
     };
 
-    private static Scalar LOWER_ORANGE1 = new Scalar(0, 40, 80);
-    private static Scalar UPPER_ORANGE1 = new Scalar(5, 255, 250);
-    private static Scalar LOWER_ORANGE2 = new Scalar(175, 40, 80);
-    private static Scalar UPPER_ORANGE2 = new Scalar(180, 255, 250);
+    private static Scalar LOWER_ORANGE1 = new Scalar(5, 60, 80);
+    private static Scalar UPPER_ORANGE1 = new Scalar(25, 255, 220);
+    private static Scalar LOWER_ORANGE2 = new Scalar(180, 0, 0);
+    private static Scalar UPPER_ORANGE2 = new Scalar(180, 255, 255);
 
     // red wraps around in HSV, so we need two ranges
-    private static Scalar LOWER_RED1 = new Scalar(0, 254, 255);
-    private static Scalar UPPER_RED1 = new Scalar(1, 255, 255);
-    private static Scalar LOWER_RED2 = new Scalar(155, 60, 80);
-    private static Scalar UPPER_RED2 = new Scalar(168, 255, 220);
+    private static Scalar LOWER_RED1 = new Scalar(0, 40, 80);
+    private static Scalar UPPER_RED1 = new Scalar(7, 255, 255);
+    private static Scalar LOWER_RED2 = new Scalar(175, 40, 80);
+    private static Scalar UPPER_RED2 = new Scalar(180, 255, 220);
 
 
     private static Scalar LOWER_BROWN1 = new Scalar(0, 50, 20);
@@ -225,18 +225,18 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
         Imgproc.cvtColor(mBgr, mHsv, Imgproc.COLOR_BGR2HSV);
 
         //Core.inRange(mHsv, COLOR_BOUNDS[3][0], COLOR_BOUNDS[3][1], mask);
-
+/*
         Core.inRange(mHsv, LOWER_ORANGE1, UPPER_ORANGE1, mask);
         Mat rmask2 = new Mat();
         Core.inRange(mHsv, LOWER_ORANGE2, UPPER_ORANGE2, rmask2);
         Core.bitwise_or(mask, rmask2, mask);
+*/
 
-/*
         Core.inRange(mHsv, LOWER_RED1, UPPER_RED1, mask);
         Mat rmask2 = new Mat();
         Core.inRange(mHsv, LOWER_RED2, UPPER_RED2, rmask2);
         Core.bitwise_or(mask, rmask2, mask);
-*/
+
 /*
         Core.inRange(mHsv, LOWER_BROWN1, UPPER_BROWN1, mask);
         Mat rmask2 = new Mat();
@@ -300,8 +300,8 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
 
             String dispValStr = getResValue(findLocations(subMat));
             if (dispValStr != null || dispValStr != "") {
-                Core.putText(mRgba, dispValStr, strPos, Core.FONT_HERSHEY_SIMPLEX,
-                        0.5, new Scalar(0, 0, 100, 225), 1);
+                Core.putText(mRgba, dispValStr, strPos, Core.FONT_HERSHEY_COMPLEX,
+                        0.8, new Scalar(0, 200, 200, 225), 1);
             }
 
         }
@@ -425,7 +425,7 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
 
             String valueStr;
             if(value >= 1e3 && value < 1e6)
-                valueStr = String.valueOf(value/1e3) + " KOhm";
+                valueStr = String.valueOf(value/1e3) + " kOhm";
             else if(value >= 1e6)
                 valueStr = String.valueOf(value/1e6) + " MOhm";
             else
@@ -442,7 +442,7 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
                     value *= Math.pow(10, locValues.get(k_power));
 
                     if (value >= 1e3 && value < 1e6)
-                        valueStr = String.valueOf(value / 1e3) + " KOhm";
+                        valueStr = String.valueOf(value / 1e3) + " kOhm";
                     else if (value >= 1e6)
                         valueStr = String.valueOf(value / 1e6) + " MOhm";
                     else
