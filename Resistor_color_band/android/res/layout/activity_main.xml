@@ -11,25 +11,25 @@
     tools:context="edu.ucsb.ece.ece150.ohmcalc.MainActivity">
 
     <Button
-        android:layout_width="220dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:id="@+id/buttonEnter"
-        android:text="Manual Enter Color Code"
+        android:text="Manually  Enter  Color  Codes"
         android:layout_gravity="center"
         android:layout_weight="1" />
 
     <Button
-        android:layout_width="220dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Detect"
+        android:text="Recognize  color  codes  via  Camera"
         android:id="@+id/buttonDetect"
         android:layout_gravity="center"
         android:layout_weight="1" />
 
     <Button
-        android:layout_width="220dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Enter Resistance"
+        android:text="Enter  Resistance  Display  3D  model"
         android:id="@+id/buttonDisplay"
         android:layout_gravity="center"
         android:layout_weight="1"/>

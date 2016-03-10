@@ -78,7 +78,7 @@ public class SpinnerAdapter extends BaseAdapter
         view=inflater.inflate(android.R.layout.simple_spinner_dropdown_item, null);
         TextView txv=(TextView)view.findViewById(android.R.id.text1);
         txv.setBackgroundColor(colors.get(pos));
-        txv.setTextSize(16f);
+        txv.setTextSize(20f);
         if((ringIdx == 4 && pos == 8) || (ringIdx == 5 && pos == 0)) {
             txv.setText("SILVER");
         }

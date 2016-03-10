@@ -51,6 +51,9 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
     private String filename = "cascade.xml";
     private int counter = 0;
     private MatOfRect faces;
+    private String[] resVals;
+    private ArrayList<Rect> smallRoiList;
+    private ArrayList<Point> strPosList;
     //protected SeekBar zoomControl;
 
     private int NUM_CODES = 10;
@@ -78,8 +81,8 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
 
     // red wraps around in HSV, so we need two ranges
     private static Scalar LOWER_RED1 = new Scalar(0, 40, 80);
-    private static Scalar UPPER_RED1 = new Scalar(7, 255, 255);
-    private static Scalar LOWER_RED2 = new Scalar(175, 40, 80);
+    private static Scalar UPPER_RED1 = new Scalar(5, 255, 255);
+    private static Scalar LOWER_RED2 = new Scalar(170, 40, 80);
     private static Scalar UPPER_RED2 = new Scalar(180, 255, 220);
 
 
@@ -104,6 +107,8 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
         mOpenCvCameraView.setZoomControl((SeekBar) findViewById(R.id.CameraZoomControls));
         mOpenCvCameraView.setCvCameraViewListener(this);
+        smallRoiList = new ArrayList<Rect>();
+        strPosList = new ArrayList<Point>();
 
     }
 
@@ -231,12 +236,12 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
         Core.inRange(mHsv, LOWER_ORANGE2, UPPER_ORANGE2, rmask2);
         Core.bitwise_or(mask, rmask2, mask);
 */
-
+        /*
         Core.inRange(mHsv, LOWER_RED1, UPPER_RED1, mask);
         Mat rmask2 = new Mat();
         Core.inRange(mHsv, LOWER_RED2, UPPER_RED2, rmask2);
         Core.bitwise_or(mask, rmask2, mask);
-
+*/
 /*
         Core.inRange(mHsv, LOWER_BROWN1, UPPER_BROWN1, mask);
         Mat rmask2 = new Mat();
@@ -244,7 +249,7 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
         Core.bitwise_or(mask, rmask2, mask);
 */
 
-        Core.bitwise_not(mask, mask);
+        //Core.bitwise_not(mask, mask);
 
 
 
@@ -266,6 +271,45 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
             if (counter == 6) {
                 haarCascade.detectMultiScale(mGray, faces, 1.5, 25, 2, new Size(120, 40), new Size());
                 counter = 0;
+
+                Rect[] facesArray = faces.toArray();
+                resVals = new String[facesArray.length];
+                ArrayList<Mat> matArray = new ArrayList<Mat>();
+                ArrayList<SparseIntArray> codeArray = new ArrayList<SparseIntArray>();
+                smallRoiList.clear();
+                strPosList.clear();
+
+                for (int i = 0; i < facesArray.length; i++) {
+                    double x0 = facesArray[i].tl().x;
+                    double y0 = facesArray[i].tl().y;
+                    double x1 = facesArray[i].br().x;
+                    double y1 = facesArray[i].br().y;
+                    Log.d("x0", String.valueOf((int)x0));
+                    Log.d("y0", String.valueOf((int)y0));
+                    Log.d("x1", String.valueOf((int)x1));
+                    Log.d("y1", String.valueOf((int)y1));
+
+                    Point rectCenter = new Point(facesArray[i].tl().x + facesArray[i].width / 2,
+                            facesArray[i].tl().y + facesArray[i].height / 2);
+                    Point smallRectTl = new Point(rectCenter.x - 0.5 * facesArray[i].width / 2,
+                            rectCenter.y + 0.02 * facesArray[i].height / 2);
+                    Point smallRectBr = new Point(rectCenter.x + 0.6 * facesArray[i].width / 2,
+                            rectCenter.y + 0.5 * facesArray[i].height / 2);
+                    Point strPos = new Point(facesArray[i].tl().x , facesArray[i].tl().y - 15);
+                    strPosList.add(strPos);
+                    Rect smallRoi = new Rect(smallRectTl, smallRectBr);
+                    smallRoiList.add(smallRoi);
+
+
+                    Rect roi = new Rect(facesArray[i].tl(), facesArray[i].br());
+                    //Mat subMat = mRgba.submat(roi);
+                    Mat subMat = mHsv.submat(smallRoi);
+
+                    String dispValStr = getResValue(findLocations(subMat));
+                    resVals[i] = dispValStr;
+
+
+                }
             }
         }
 
@@ -274,51 +318,26 @@ public class DetectActivity extends Activity implements CameraBridgeViewBase.CvC
         ArrayList<Mat> matArray = new ArrayList<Mat>();
         ArrayList<SparseIntArray> codeArray = new ArrayList<SparseIntArray>();
 
-        for (int i = 0; i < facesArray.length; i++) {
-            double x0 = facesArray[i].tl().x;
-            double y0 = facesArray[i].tl().y;
-            double x1 = facesArray[i].br().x;
-            double y1 = facesArray[i].br().y;
-            Log.d("x0", String.valueOf((int)x0));
-            Log.d("y0", String.valueOf((int)y0));
-            Log.d("x1", String.valueOf((int)x1));
-            Log.d("y1", String.valueOf((int)y1));
-
-            Point rectCenter = new Point(facesArray[i].tl().x + facesArray[i].width / 2,
-                    facesArray[i].tl().y + facesArray[i].height / 2);
-            Point smallRectTl = new Point(rectCenter.x - 0.5 * facesArray[i].width / 2,
-                    rectCenter.y + 0.02 * facesArray[i].height / 2);
-            Point smallRectBr = new Point(rectCenter.x + 0.6 * facesArray[i].width / 2,
-                    rectCenter.y + 0.5 * facesArray[i].height / 2);
-            Point strPos = new Point(facesArray[i].tl().x , facesArray[i].tl().y - 15);
-
-            Rect smallRoi = new Rect(smallRectTl, smallRectBr);
-            Core.rectangle(mRgba, smallRoi.tl(), smallRoi.br(), new Scalar(100), 3);
-            Rect roi = new Rect(facesArray[i].tl(), facesArray[i].br());
-            //Mat subMat = mRgba.submat(roi);
-            Mat subMat = mHsv.submat(smallRoi);
-
-            String dispValStr = getResValue(findLocations(subMat));
-            if (dispValStr != null || dispValStr != "") {
-                Core.putText(mRgba, dispValStr, strPos, Core.FONT_HERSHEY_COMPLEX,
-                        0.8, new Scalar(0, 200, 200, 225), 1);
-            }
-
-        }
 
 
-        Mat newRgba = new Mat();
 
-        mRgba.copyTo(newRgba, mask);
+        //Mat newRgba = new Mat();
+
+        //mRgba.copyTo(newRgba, mask);
         //Core.bitwise_and(mRgba, mask, newRgba);
 
 
         for (int i = 0; i < facesArray.length; i++){
             //Core.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), new Scalar(100), 3);
-            Core.rectangle(newRgba, facesArray[i].tl(), facesArray[i].br(), new Scalar(100), 3);
+            Core.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), new Scalar(100), 3);
+            Core.rectangle(mRgba, smallRoiList.get(i).tl(), smallRoiList.get(i).br(), new Scalar(100), 3);
+            if (resVals[i] != null && resVals[i] != "" ) {
+                Core.putText(mRgba, resVals[i], strPosList.get(i), Core.FONT_HERSHEY_COMPLEX,
+                        0.8, new Scalar(255, 20, 20, 255), 1);
+            }
         }
         //return mRgba;
-        return newRgba;
+        return mRgba;
 
 
         //return inputFrame.rgba();
