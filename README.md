@@ -1,6 +1,9 @@
-# UCSB Winter 2016 Android Project
+# Embedded
 
-## Personnel
+## Photo Album
 
+## Buy Albums
 
+## Camera and detection
 
+## 3D render
